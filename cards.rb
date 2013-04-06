@@ -5,6 +5,10 @@ cards = [
   {
     name: "Loose Stone",
     description: "Dig the card below for free."
+  },
+  {
+    name: "Fumble",
+    description: "Drop a random dug item five cards down."
   }
 ]
 
@@ -26,5 +30,8 @@ Prawn::Document.generate("cards.pdf", page_size: [2.5.in, 3.5.in]) do
              at: [0, margin_box.top-100],
              width: margin_box.width,
              align: :center
+
+    # FIXME: Extra page at end.
+    start_new_page
   end
 end
