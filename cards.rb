@@ -92,24 +92,42 @@ def store_items
   ]
 end
 
-Prawn::Document.generate("cards.pdf", page_size: [2.5.in, 3.5.in]) do
+
+Prawn::Document.generate("cards.pdf", page_size: "LETTER") do
   font_families.update("Skia" => {
     :normal => "/Library/Fonts/Skia.ttf",
   })
   font "Skia"
 
-  cards.each do |card|
-    text_box card.fetch(:name),
-             size: 12,
-             at: [0, margin_box.top],
-             width: margin_box.width,
-             align: :center
+  card_width, card_height = 2.5.in, 3.5.in
+  margin = 2
+  cards_per_row = 3
+  rows_per_page = 3
 
-    text_box card.fetch(:description),
-             size: 10,
-             at: [0, margin_box.top-100],
-             width: margin_box.width,
-             align: :center
+  pages = cards.each_slice(cards_per_row).each_slice(rows_per_page)
+
+  pages.each do |page|
+    page.each_with_index do |row, row_index|
+      row.each_with_index do |card, column_index|
+        box_right = column_index * (card_width + margin)
+        box_top = margin_box.top - (row_index * (card_height + margin))
+
+        bounding_box([box_right, box_top], width: card_width, height: card_height) do
+          stroke_bounds
+          text_box card.fetch(:name),
+                   size: 12,
+                   at: [10, card_height-40],
+                   width: card_width-20,
+                   align: :center
+
+          text_box card.fetch(:description),
+                   size: 10,
+                   at: [10, card_height-130],
+                   width: card_width-20,
+                   align: :center
+        end
+      end
+    end
 
     # FIXME: Extra page at end.
     start_new_page
