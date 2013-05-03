@@ -1,0 +1,20 @@
+- card: Draw a card.
+  count: 3
+
+- card: Discard a card.
+  count: 3
+
+- card: Play another card.
+  count: 3
+
+- card: Pass an additional card.
+  count: 3
+
+- card: Take a card from the previous player. (Their choice.)
+  count: 3
+
+- card: Do nothing.
+  count: 3
+
+- card: Draw a card and play it.
+  count: 3
